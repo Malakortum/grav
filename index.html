@@ -186,7 +186,7 @@ function updatePlayer(p, dt, now){
   if (p.hand.seen){ p.hist.push({t: now, x: p.hand.x, y: p.hand.y}); while (p.hist.length && now - p.hist[0].t > 130) p.hist.shift(); } else p.hist = [];
   if (p.phase === 'ready'){
     p.readyT += dt;
-    const h = p.hand, hr = p.hand.hr || Math.min(W,H)*0.085;
+    const h = p.hand, hr = p.hand.hr || Math.min(W,H)*0.031;
     const d = h.seen ? Math.hypot(h.x-p.bx, h.y-p.by) : 1e9;
     if (d < hr + p.br*1.3){ p.touched = true; p.touchT = 0.5; }
     else if (p.touched){ p.touchT -= dt; if (p.touchT <= 0) p.touched = false; }
@@ -335,7 +335,7 @@ function trackHands(){
     const f = assigned[i];
     if (!f){ p.hand.seen = false; p.pts = null; return; }
     p.pts = f.pts;
-    p.hand.hr = Math.max(Math.min(W,H)*0.085, Math.hypot(f.pts[0].x - f.pts[9].x, f.pts[0].y - f.pts[9].y)*1.05);
+    p.hand.hr = Math.max(Math.min(W,H)*0.031, Math.hypot(f.pts[0].x - f.pts[9].x, f.pts[0].y - f.pts[9].y)*0.38);
     p.hand.x = p.hand.seen ? p.hand.x + (f.c.x-p.hand.x)*0.7 : f.c.x;
     p.hand.y = p.hand.seen ? p.hand.y + (f.c.y-p.hand.y)*0.7 : f.c.y;
     p.hand.seen = true;
@@ -435,7 +435,7 @@ function drawBall(p, t){
 const BONES=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
 function drawHand(p){
   if (!p.hand.seen) return;
-  const col = mode==='duo' ? P_COLORS[p.idx] : '#8fe9ff', hr = p.hand.hr || Math.min(W,H)*0.085;
+  const col = mode==='duo' ? P_COLORS[p.idx] : '#8fe9ff', hr = p.hand.hr || Math.min(W,H)*0.031;
   const f = flick(p), fast = f && Math.hypot(f.vx, f.vy) > W*0.18;
   ctx.lineCap = 'round';
   if (p.pts){ // หน้าตามือแบบเกมอยุธยา
